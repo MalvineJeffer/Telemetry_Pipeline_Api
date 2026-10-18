@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel, Field, field_validator
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import List, Optional
 import logging
 
@@ -16,7 +16,7 @@ app = FastAPI(
 # --- DATA SCHEMAS ---
 class TelemetryPayload(BaseModel):
     vehicle_id: str = Field(..., example="VH-10492")
-    timestamp: datetime = Field(default_factory=datetime.utcnow)
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     latitude: float = Field(..., ge=-90.0, le=90.0)
     longitude: float = Field(..., ge=-180.0, le=180.0)
     speed_mph: float = Field(..., ge=0.0, le=200.0)
@@ -37,7 +37,7 @@ class BatchIngestResponse(BaseModel):
 # --- ENDPOINTS ---
 @app.get("/health", status_code=status.HTTP_200_OK)
 async def health_check():
-    return {"status": "healthy", "timestamp": datetime.utcnow().isoformat()}
+    return {"status": "healthy", "timestamp": datetime.now(timezone.utc).isoformat()}
 
 @app.post("/api/v1/telemetry", response_model=BatchIngestResponse, status_code=status.HTTP_201_CREATED)
 async def ingest_telemetry_stream(payloads: List[TelemetryPayload]):
