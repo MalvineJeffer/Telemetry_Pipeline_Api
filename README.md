@@ -9,7 +9,7 @@ A lightweight, asynchronous **FastAPI** application designed to process, sanitiz
 - **Export Engine:** Asynchronous batching system for exporting processed metrics into JSON/Parquet storage formats.
 
 ## 🛠 Tech Stack
-- **Language:** Python 3.11+
+- **Language:** Python 3.13
 - **Framework:** FastAPI, Uvicorn
 - **Validation & Parsing:** Pydantic
 - **Testing:** Pytest, HTTPX
