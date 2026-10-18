@@ -1,5 +1,3 @@
-### File 2: `app/main.py`
-```python
 from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel, Field, field_validator
 from datetime import datetime
